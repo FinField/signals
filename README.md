@@ -48,6 +48,23 @@ write_submission("submission.csv", rank_signal(scores))
 The score recipe is fixed and documented: `momentum_252d - momentum_63d` when both
 exist, else whichever momentum is available, else a neutral 0.
 
+## Real-data example: value factor from the live feed
+
+`examples/feed_value_factor.py` goes from the signed
+[FinField/feed](https://github.com/FinField/feed) corpus to a submit-ready
+file in one command — no market-data vendor:
+
+```bash
+git clone https://github.com/FinField/feed /tmp/finfield-feed
+python examples/feed_value_factor.py --feed /tmp/finfield-feed/feed --out submission.csv
+# decoded 87313 facts for 6500 entities (0 rejected)
+# wrote submission.csv with 4182 tickers
+```
+
+The signal is the Fama-French value factor — book equity over free-float
+market cap (`finfield:book_to_float_mcap`) — cross-sectionally ranked into
+(0,1). Byte-identical across runs.
+
 Part of the [FinField](https://github.com/FinField) field: [facts](https://github.com/FinField/facts) ·
 [scrapers](https://github.com/FinField/scrapers) · [knit](https://github.com/FinField/knit) ·
 [agents](https://github.com/FinField/agents) · [crypto](https://github.com/FinField/crypto)
