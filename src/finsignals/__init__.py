@@ -23,6 +23,16 @@ from .features import (  # noqa: F401
     momentum,
     volatility,
 )
+from .factors import (  # noqa: F401
+    downside_volatility,
+    factor_facts,
+    high_ratio,
+    ma_gap,
+    max_return,
+    reversal,
+    skew,
+    skip_momentum,
+)
 from .universe import intersect, load_universe  # noqa: F401
 
 __version__ = "0.1.0"
