@@ -68,3 +68,32 @@ market cap (`finfield:book_to_float_mcap`) — cross-sectionally ranked into
 Part of the [FinField](https://github.com/FinField) field: [facts](https://github.com/FinField/facts) ·
 [scrapers](https://github.com/FinField/scrapers) · [knit](https://github.com/FinField/knit) ·
 [agents](https://github.com/FinField/agents) · [crypto](https://github.com/FinField/crypto)
+
+## Extended factor zoo — the edge features
+
+`finsignals.factors` adds the academically-validated cross-sectional factors that
+actually move Signals correlation, all computed from the **same `finfield:close`
+facts** (no new data source), all exact-Decimal and mintable back into the field
+via `factor_facts` (scale-6 `pure`, `derived_from` CID chains, votable):
+
+| factor | concept | why it has edge |
+|---|---|---|
+| 12-1 skip momentum | `finsignals:skipmom_252_21` | residual momentum, strips short-term reversal |
+| multi-horizon momentum | `finsignals:momentum_21d` / `_126d` | captures medium-term trend |
+| short-term reversal | `finsignals:reversal_5d` | 1-week mean reversion |
+| downside volatility | `finsignals:downside_vol_63d` | semideviation / downside risk premium |
+| lottery (MAX) | `finsignals:max_return_21d` | high-max stocks under-perform (negative predictor) |
+| 52-week-high proximity | `finsignals:high_252d_ratio` | George–Hwang nearness-to-high |
+| moving-average gap | `finsignals:ma_gap_50` / `_200` | trend / distance from MA |
+| return skewness | `finsignals:skew_63d` | idiosyncratic-skew premium |
+| long-horizon volatility | `finsignals:volatility_252d` | risk normalization |
+
+```python
+from finsignals import factor_facts
+feats = factor_facts(f"ticker:{ticker}", field_facts_for(ticker), asof_day="2026-07-03")
+# each fact is finsignals:<factor> at scale 6, derived_from the exact close CIDs used
+```
+
+The standard `feature_facts` pack (momentum_63d / momentum_252d / volatility_63d) is
+unchanged and byte-stable; `factor_facts` is purely additive. Build your model on the
+full factor matrix, or weave the facts back so peers can vote on them.
